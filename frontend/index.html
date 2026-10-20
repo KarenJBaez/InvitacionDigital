@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitación - 30 Años Andrea</title>
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&family=Pinyon+Script&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="brillos-fondo"></div>
+
+    <div class="invitacion">
+        <div class="borde-interno"></div>
+        
+        <div class="circulo-dorado-contenedor">
+            <div class="circulo-dorado">
+                <h1 class="edad">30</h1>
+                <p class="anos">Años</p>
+            </div>
+        </div>
+
+        <p class="subtitulo">Te invito a celebrar mi cumpleaños</p>
+        <h2 class="nombre-festejada">Leandro Menza</h2>
+
+        <div class="detalles-fecha">
+            <div class="fecha-item">SÁBADO</div>
+            <div class="fecha-item centro">
+                <span class="dia-numero">12</span>
+                <span class="mes">Diciembre</span>
+            </div>
+            <div class="fecha-item">3:00 P.M.</div>
+        </div>
+
+        <p class="ubicacion">
+            <strong>La fiesta será en:</strong><br>
+            Calle Cualquiera 123, Cualquier Lugar
+        </p>
+
+        <button class="btn-abrir" onclick="abrirModal()">Confirmar Asistencia</button>
+    </div>
+
+    <!-- VENTANA EMERGENTE (MODAL) -->
+    <div id="miModal" class="modal">
+        <div class="modal-contenido">
+            <span class="cerrar" onclick="cerrarModal()">&times;</span>
+            <h3 class="modal-titulo">Confirmación</h3>
+            
+            <form id="formInvitados">
+                <div class="input-group">
+                    <label for="nombre">Tu Nombre Completo</label>
+                    <input type="text" id="nombre" required placeholder="Ej. Carlos Mendoza">
+                </div>
+
+                <div class="input-group">
+                    <label for="acompanante">¿Asistes con acompañante?</label>
+                    <select id="acompanante" required>
+                        <option value="Voy solo/a">No, voy solo/a</option>
+                        <option value="1 Acompañante">Sí, 1 acompañante</option>
+                        <option value="2 Acompañantes">Sí, 2 acompañantes</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="tomaAlcohol">¿Consumes bebidas alcohólicas?</label>
+                    <select id="tomaAlcohol" required>
+                        <option value="Sí">Sí, consumo</option>
+                        <option value="No">No consumo alcohol</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="problemasComida">¿Restricciones alimentarias?</label>
+                    <textarea id="problemasComida" rows="2" placeholder="Ej. Vegano, Celíaco, Alergias... (Si no tienes, deja en blanco)"></textarea>
+                </div>
+
+                <button type="submit" class="btn-enviar" id="btnTexto">Enviar Registro</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "http://localhost:5000/api/confirmar";
+
+        function abrirModal() { document.getElementById("miModal").style.display = "flex"; }
+        function cerrarModal() { document.getElementById("miModal").style.display = "none"; }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById("miModal");
+            if (event.target == modal) cerrarModal();
+        }
+
+        document.getElementById("formInvitados").addEventListener("submit", async function(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById("btnTexto");
+            btn.innerText = "Guardando...";
+            btn.disabled = true;
+
+            const datos = {
+                nombre: document.getElementById("nombre").value,
+                acompañante: document.getElementById("acompanante").value,
+                tomaAlcohol: document.getElementById("tomaAlcohol").value,
+                problemasComida: document.getElementById("problemasComida").value || "Ninguna"
+            };
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(datos)
+                });
+
+                const resultado = await response.json();
+
+                if (resultado.success) {
+                    alert("¡Perfecto! Tu confirmación se guardó con éxito.");
+                    document.getElementById("formInvitados").reset();
+                    cerrarModal();
+                } else {
+                    alert("Error: " + resultado.error);
+                }
+            } catch (error) {
+                alert("No se pudo conectar con el servidor.");
+            } finally {
+                btn.innerText = "Enviar Registro";
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
