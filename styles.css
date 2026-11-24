@@ -330,3 +330,42 @@ textarea {
     cursor: not-allowed;
     transform: none;
 }
+
+
+/* ENANOS BAILANDO */
+.enanos-fiesta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin-top: 25px;
+    position: relative;
+    z-index: 3;
+}
+
+.enanos-fiesta img {
+    width: 105px;
+    height: 105px;
+    object-fit: contain;
+    animation: baileEnanos 0.7s infinite alternate ease-in-out;
+}
+
+.enanos-fiesta img:nth-child(2) {
+    animation-delay: 0.35s;
+}
+
+@keyframes baileEnanos {
+    from {
+        transform: rotate(-12deg) translateY(0);
+    }
+    to {
+        transform: rotate(12deg) translateY(-8px);
+    }
+}
+
+@media (max-width: 480px) {
+    .enanos-fiesta img {
+        width: 85px;
+        height: 85px;
+    }
+}
