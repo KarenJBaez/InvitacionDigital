@@ -332,12 +332,12 @@ textarea {
 }
 
 
-/* ENANOS BAILANDO */
+/* ENANOS Y SHREK BAILANDO */
 .enanos-fiesta {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 5px;
+    gap: 15px;
     margin-top: 25px;
     position: relative;
     z-index: 3;
@@ -350,6 +350,7 @@ textarea {
     animation: baileEnanos 0.7s infinite alternate ease-in-out;
 }
 
+/* Movimiento alternado */
 .enanos-fiesta img:nth-child(2) {
     animation-delay: 0.35s;
 }
@@ -363,6 +364,7 @@ textarea {
     }
 }
 
+/* CELULARES */
 @media (max-width: 480px) {
     .enanos-fiesta img {
         width: 85px;
